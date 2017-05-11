@@ -15,5 +15,7 @@
         <property name="hibernate.default_schema">testhiber</property>
 
         <mapping class="HibernateTesting.User"/>
+        <mapping class="HibernateTesting.Troop"/>
+        <mapping class="HibernateTesting.Soldier"/>
     </session-factory>
 </hibernate-configuration>

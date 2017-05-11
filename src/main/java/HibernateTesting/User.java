@@ -2,36 +2,37 @@ package HibernateTesting;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "User_T")
 public class User implements Serializable {
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+
     private long id;
-    @Column(name = "NAME")
+
     private String name;
-    @ManyToMany(cascade={CascadeType.ALL})
-    @JoinTable(name="Parent_Child",
-            joinColumns={@JoinColumn(name="Parent")},
-            inverseJoinColumns={@JoinColumn(name="Child")})
+
+    private Date day;
+
     private Set<User> parent;
-    @ManyToMany(mappedBy="parent")
+
     private Set<User> child;
 
 
     private User() {}
 
-    public User(String name) {
+    public User(String name, Date day) {
         this.name = name;
+        this.day = day;
         parent = new HashSet<User>();
         child = new HashSet<User>();
     }
 
-
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public long getId() {
         return id;
     }
@@ -40,7 +41,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-
+    @Column(name = "NAME")
     public String getName() {
         return name;
     }
@@ -49,6 +50,18 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    @Column(name = "DAY")
+    public Date getDay()
+    {
+        return day;
+    }
+
+    public void setDay(Date day)
+    {
+        this.day = day;
+    }
+
+    @ManyToMany(mappedBy="child")
     public Set<User> getParent() {
         return parent;
     }
@@ -57,6 +70,10 @@ public class User implements Serializable {
         this.parent = parent;
     }
 
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="Parent_Child",
+          joinColumns={@JoinColumn(name="Parent")},
+          inverseJoinColumns={@JoinColumn(name="Child")})
     public Set<User> getChild() {
         return child;
     }
